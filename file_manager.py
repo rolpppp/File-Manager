@@ -124,6 +124,23 @@ class NewFileHandler(FileSystemEventHandler):
             logging.info(f"New file detected: {event.src_path}")
             process_new_file(event.src_path)
 
+def monitor_folder(interval=1):
+    processed_files = set()
+
+    while True:
+        try:
+            for filename in os.listdir(downloads_folder):
+                file_path = os.path.join(downloads_folder, filename)
+                if os.path.isfile(file_path) and filename not in processed_files:
+                    logging.info(f"New file detected: {file_path}")
+                    process_new_file(file_path)
+                    processed_files.add(filename)
+
+            time.sleep(interval)  # Wait for the specified interval before checking again
+
+        except Exception as e:
+            logging.error(f"Error monitoring folder: {e}")
+
 # This sets up the observer
 if __name__ == "__main__":
     event_handler = NewFileHandler()
@@ -131,6 +148,7 @@ if __name__ == "__main__":
     observer.schedule(event_handler, path=downloads_folder, recursive=False)
     
     logging.info("Monitoring Downloads folder for new files...")
+    monitor_folder(interval=1)
     observer.start()
     
     try:
