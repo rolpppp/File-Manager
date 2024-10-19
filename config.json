@@ -1,0 +1,12 @@
+{
+    "downloads_folder": "C:/Users/IDEAPAD/Downloads",
+    "folders": {
+        "cmsc_122_study_guide": "C:/Users/IDEAPAD/Desktop/My Files/2nd Year/1st Sem/CMSC 122/Study Guide",
+        "cmsc_154_study_guide": "C:/Users/IDEAPAD/Desktop/My Files/2nd Year/1st Sem/CMSC 154/Study Guide",
+        "cmsc_13_study_guide": "C:/Users/IDEAPAD/Desktop/My Files/2nd Year/1st Sem/CMSC 13/Study Guide",
+        "cmsc_122_readings": "C:/Users/IDEAPAD/Desktop/My Files/2nd Year/1st Sem/CMSC 122/Readings",
+        "cmsc_154_lab_files": "C:/Users/IDEAPAD/Desktop/My Files/2nd Year/1st Sem/CMSC 154/Lab files"
+    },
+    "backup_folder": "C:/Users/IDEAPAD/Desktop/File_Backups",
+    "allowed_extensions": [".docx", ".pdf", ".zip"]
+}
