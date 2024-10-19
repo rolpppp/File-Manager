@@ -12,18 +12,18 @@ import time
 with open('config.json', 'r') as f:
     config = json.load(f)
 
-# Define paths and allowed file types
+# Basically for defining paths and allowed file types
 downloads_folder = config['downloads_folder']
 backup_folder = config['backup_folder']
 folders = config['folders']
 allowed_extensions = config['allowed_extensions']
 
-# Ensure destination folders and backup folder exist
+# This is to ensure destination folders and backup folder exist
 for folder in folders.values():
     os.makedirs(folder, exist_ok=True)
 os.makedirs(backup_folder, exist_ok=True)
 
-# Set up logging
+# Setting up logging system
 logging.basicConfig(filename='file_manager.log', level=logging.INFO, 
                     format='%(asctime)s:%(levelname)s:%(message)s')
 
@@ -35,13 +35,13 @@ def get_file_hash(filepath):
             hash_md5.update(chunk)
     return hash_md5.hexdigest()
 
-# Helper function to rename a file if it already exists in the destination
+# Renames a file if it already exists in the destination
 def handle_existing_file(dest, filename, src_path):
     file_root, file_ext = os.path.splitext(filename)
     dest_path = os.path.join(dest, filename)
     
     if os.path.exists(dest_path):
-        # Check if files are identical using hashes
+        # Checks if files are identical using hashes
         if get_file_hash(dest_path) == get_file_hash(src_path):
             logging.info(f"Identical file already exists at {dest_path}, skipping move.")
             return None  # No need to move the file
@@ -55,13 +55,13 @@ def handle_existing_file(dest, filename, src_path):
             return new_filename
     return filename
 
-# Helper function to move a file
+# Function to move files
 def move_file(src, dest):
     try:
         filename = os.path.basename(src)
         new_filename = handle_existing_file(dest, filename, src)
         if new_filename:
-            # Back up the file before moving it
+            # Backs up the file before moving it. Can also be removed. This is for security purposes
             shutil.copy2(src, backup_folder)
             logging.info(f"Backed up {filename} to {backup_folder}")
             
@@ -73,7 +73,7 @@ def move_file(src, dest):
     except Exception as e:
         logging.error(f"Error moving file {src}: {e}")
 
-# File validation function
+# Checks if the file is valid
 def is_valid_file(filename):
     return os.path.splitext(filename)[1].lower() in allowed_extensions
 
@@ -85,7 +85,7 @@ def process_new_file(file_path):
         logging.warning(f"Invalid file type detected: {filename}, skipping...")
         return
 
-    # Rule 1: Study Guide (CMSC 122, CMSC 154, CMSC 13)
+    # Rule 1: Study Guide (CMSC 122, CMSC 154, CMSC 13). 
     if "Study Guide" in filename:
         if filename.endswith(".docx"):
             move_file(file_path, folders['cmsc_122_study_guide'])
@@ -117,14 +117,14 @@ def process_new_file(file_path):
         except Exception as e:
             logging.error(f"Error extracting {filename}: {e}")
 
-# Event handler for new files
+# Handles new files
 class NewFileHandler(FileSystemEventHandler):
     def on_created(self, event):
         if not event.is_directory:
             logging.info(f"New file detected: {event.src_path}")
             process_new_file(event.src_path)
 
-# Set up the observer
+# This sets up the observer
 if __name__ == "__main__":
     event_handler = NewFileHandler()
     observer = Observer()
@@ -135,7 +135,7 @@ if __name__ == "__main__":
     
     try:
         while True:
-            time.sleep(1)  # Keep the script running
+            time.sleep(1)  # Keeps the script running
     except KeyboardInterrupt:
         observer.stop()
     
