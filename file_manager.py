@@ -89,10 +89,10 @@ def process_new_file(file_path):
     if "Study Guide" in filename:
         if filename.endswith(".docx"):
             move_file(file_path, folders['cmsc_122_study_guide'])
-        elif "for" in filename:
-            if "CMSC 154" in filename:
+        else:
+            if "for" in filename:
                 move_file(file_path, folders['cmsc_154_study_guide'])
-            elif "CMSC 13" in filename:
+            else:
                 move_file(file_path, folders['cmsc_13_study_guide'])
     
     # Rule 2: Lecture Notes (CMSC 122 Readings)
